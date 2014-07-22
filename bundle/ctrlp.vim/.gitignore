@@ -1,0 +1,17 @@
+<<<<<<< Updated upstream
+*.markdown
+*.zip
+note.txt
+tags
+.hg*
+tmp/*
+=======
+.hgignore
+*.markdown
+*.zip
+wiki.md
+note.txt
+tags
+.hg/*
+tmp/*
+>>>>>>> Stashed changes
