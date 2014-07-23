@@ -25,8 +25,9 @@ set wrap                          " Turn on line wrapping.
 "set complete=.,w,b,u,t           " Get completion keywords from current file, other windows, buffers, and tags
 "set complete=.,t                  " Get completion keywords from current file, other windows, buffers, and tags
 set sessionoptions+=localoptions,resize,winpos " When a session is saved, save the local options and mappings, the size of the window, and its position
-set autoindent                    " always set autoindenting on
-set copyindent                    " copy the previous indentation on autoindenting
+set autoindent                    " Always set autoindenting on
+set copyindent                    " Copy the previous indentation on autoindenting
+set expandtab                     " Insert spaces instead of tabs
 
 " Changes for Powerline
 set laststatus=2                  " Show the status line all the time
@@ -37,15 +38,15 @@ set antialias                     " Smooth fonts.
 set encoding=utf-8                " Use UTF-8 everywhere.
 set t_Co=256                      " Use 256 color terminal
 
+set background=dark
+
 if has('gui_running')
-  :set background=dark
   ":colorscheme github
   :colorscheme koehler
   ":set guifont=Inconsolata:h20     " Font family and font size.
-  ":set guioptions-=T               " Hide toolbar.
+  :set guioptions-=T               " Hide toolbar.
   :set lines=58 columns=102         " Window dimensions.
 else
-  :set background=dark
   :colorscheme rubyblue
 endif
 "colorscheme vividchalk
@@ -84,7 +85,7 @@ filetype on		" Enable filetype detection
 filetype indent on	" Enable filetype-specific indenting
 filetype plugin on	" Enable filetype-specific plugins
 compiler ruby		" Enable compiler support for ruby
-tab 20			" Don't limit number of tabs which can be opened
+tab 15			" Increase the limit on the number of tabs which can be opened
 
 " Show tabs with a chevron (right-pointing double angle quotation mark) at
 " each tab position, show trailing and non-breaking space with a middle dot,
