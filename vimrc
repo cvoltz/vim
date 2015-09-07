@@ -41,13 +41,14 @@ set t_Co=256                      " Use 256 color terminal
 set background=dark
 
 if has('gui_running')
-  ":colorscheme github
-  :colorscheme koehler
-  ":set guifont=Inconsolata:h20     " Font family and font size.
-  :set guioptions-=T               " Hide toolbar.
-  :set lines=58 columns=102         " Window dimensions.
+":colorscheme github
+:colorscheme koehler
+:set guifont=Liberation\ Mono\ 10 " Font family and font size.
+:set guioptions-=T               " Hide toolbar.
+:set lines=58 columns=102        " Window dimensions.
 else
-  :colorscheme rubyblue
+":colorscheme rubyblue
+":colorscheme koehler
 endif
 "colorscheme vividchalk
 "colorscheme topfunky-light
@@ -56,11 +57,11 @@ endif
 
 let g:SuperTabDefaultCompletionType='context'
 if has('gui_running')
-  let g:SuperTabMappingForward='<c-space>'
-  let g:SuperTabMappingBackward='<s-c-space>'
+let g:SuperTabMappingForward='<c-space>'
+let g:SuperTabMappingBackward='<s-c-space>'
 else
-  let g:SuperTabMappingForward='<nul>'
-  let g:SuperTabMappingBackward='<s-nul>'
+let g:SuperTabMappingForward='<nul>'
+let g:SuperTabMappingBackward='<s-nul>'
 endif
 
 " BASH support
@@ -103,11 +104,11 @@ highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
 
 " Highlight text beyond 80 columns for C files
 function HighlightWideText()
-  if exists('+colorcolumn')
-    set colorcolumn=80
-  else
-    au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
-  endif
+if exists('+colorcolumn')
+set colorcolumn=80
+else
+au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+endif
 endfunction
 
 " Autowrap text to 80 chars for certain filetypes
@@ -122,26 +123,26 @@ autocmd FileType gitcommit setlocal textwidth=80
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
 function DoRake()
-  exec "w"
-  exec "!xterm -e /bin/bash -c rake &"
-  exec "i"
+exec "w"
+exec "!xterm -e /bin/bash -c rake &"
+exec "i"
 endfunction
 
 function DoMake()
-  exec "w"
-  exec "!xterm -e /bin/bash -c make &"
-  exec "i"
+exec "w"
+exec "!xterm -e /bin/bash -c make &"
+exec "i"
 endfunction
 
 function DoReset()
-  exec "!xterm -e /bin/bash -c make clean && make clobber &"
-  exec "i"
+exec "!xterm -e /bin/bash -c make clean && make clobber &"
+exec "i"
 endfunction
 
 function DoTest()
-  exec "w"
-  exec "!xterm -e /bin/bash -c make test &"
-  exec "i"
+exec "w"
+exec "!xterm -e /bin/bash -c make test &"
+exec "i"
 endfunction
 
 " Adjust QuickFix window size to the optimal # of lines (minimum 3, maximum 10)
@@ -152,57 +153,57 @@ endfunction
 
 " Automatically load and enable cscope if cscope.out is avaialable
 if has("cscope")
-  set csto=0 " search cscope before ctags
-  set cscopetag
-  set nocscopeverbose
-  " add any database in current directory
-  if filereadable("cscope.out")
-    cs add cscope.out
-  " else add database pointed to by environment
-  elseif $CSCOPE_DB != ""
-    cs add $CSCOPE_DB
-  endif
-  set cscopeverbose
+set csto=0 " search cscope before ctags
+set cscopetag
+set nocscopeverbose
+" add any database in current directory
+if filereadable("cscope.out")
+cs add cscope.out
+" else add database pointed to by environment
+elseif $CSCOPE_DB != ""
+cs add $CSCOPE_DB
+endif
+set cscopeverbose
 
-  " Map cscope functionality
-  "   's'   symbol: find all references to the token under cursor
-  "   'g'   global: find global definition(s) of the token under cursor
-  "   'c'   calls:  find all calls to the function name under cursor
-  "   't'   text:   find all instances of the text under cursor
-  "   'e'   egrep:  egrep search for the word under cursor
-  "   'f'   file:   open the filename under cursor
-  "   'i'   includes: find files that include the filename under cursor
-  "   'd'   called: find functions that function under cursor calls
-  nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-  nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-  nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+" Map cscope functionality
+"   's'   symbol: find all references to the token under cursor
+"   'g'   global: find global definition(s) of the token under cursor
+"   'c'   calls:  find all calls to the function name under cursor
+"   't'   text:   find all instances of the text under cursor
+"   'e'   egrep:  egrep search for the word under cursor
+"   'f'   file:   open the filename under cursor
+"   'i'   includes: find files that include the filename under cursor
+"   'd'   called: find functions that function under cursor calls
+nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 
-  " Using 'CTRL-/' then a search type makes the vim window
-  " split horizontally, with search result displayed in
-  " the new window.
-  nmap <C-/>s :scs find s <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-/>g :scs find g <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-/>c :scs find c <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-/>t :scs find t <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-/>e :scs find e <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-/>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
-  nmap <C-/>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-  nmap <C-/>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+" Using 'CTRL-/' then a search type makes the vim window
+" split horizontally, with search result displayed in
+" the new window.
+nmap <C-/>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-/>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-/>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-/>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-/>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-/>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-/>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <C-/>d :scs find d <C-R>=expand("<cword>")<CR><CR>
 
-  " Hitting Shift-Ctrl-/ before the search type does a vertical
-  " split instead of a horizontal one
-  nmap <S-C-/>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-  nmap <S-C-/>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-  nmap <S-C-/>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-  nmap <S-C-/>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-  nmap <S-C-/>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-  nmap <S-C-/>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-  nmap <S-C-/>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+" Hitting Shift-Ctrl-/ before the search type does a vertical
+" split instead of a horizontal one
+nmap <S-C-/>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <S-C-/>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <S-C-/>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <S-C-/>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <S-C-/>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <S-C-/>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <S-C-/>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 endif
 
 let g:speckyBannerKey        = "<C-S>b"
@@ -232,17 +233,38 @@ autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
 " For the MakeGreen plugin and Ruby RSpec.
 autocmd BufNewFile,BufRead *_spec.rb set filetype=ruby
 
-autocmd FileType cucumber compiler cucumber | setl makeprg=cucumber\ \"%:p\"
+" F8: Run currently open cucumber feature file
+" F9: Run current cucumber scenario
+" F10: Run all cucumber feature files
+autocmd FileType cucumber
+\ compiler cucumber |
+\ setlocal makeprg=cucumber\ \"%:p\" |
+\ setlocal foldmethod=syntax shiftwidth=2 tabstop=2 expandtab softtabstop=2
+autocmd FileType cucumber nmap <F8> :w<cr>:!bin/cucumber --no-color %<cr> |
+autocmd FileType cucumber nmap <F9> :w<cr>:exe "!bin/cucumber  --no-color %" . ":" . line(".")<cr> |
+autocmd FileType cucumber nmap <F10> :w<cr>:!bin/cucumber --no-color<cr>
+
+" Run currently open RSpec test file
+map <Leader>rf :w<cr>:!bin/rspec % --format documentation --no-color<cr>
+
+" Run current RSpec test
+map <Leader>rl :w<cr>:exe "!bin/rspec --no-color %" . ":" . line(".")<cr>
+
+" RSpec is clever enough to work out test to run if cursor is on any line within the test
+" Run all RSpec tests
+map <Leader>rt :w<cr>:!bin/rspec --format documentation< --no-color<cr>
+
 autocmd FileType ruby
-      \ if expand('%') =~# '_test\.rb$' |
-      \   compiler rubyunit | setl makeprg=testrb\ \"%:p\" |
-      \ elseif expand('%') =~# '_spec\.rb$' |
-      \   compiler rspec | setl makeprg=rspec\ \"%:p\" |
-      \ else |
-      \   compiler ruby | setl makeprg=ruby\ -wc\ \"%:p\" |
-      \ endif
+\ if expand('%') =~# '_test\.rb$' |
+\   compiler rubyunit | setl makeprg=testrb\ \"%:p\" |
+\ elseif expand('%') =~# '_spec\.rb$' |
+\   compiler rspec | setl makeprg=rspec\ \"%:p\" |
+\ else |
+\   compiler ruby | setl makeprg=ruby\ -wc\ \"%:p\" |
+\ endif
+
 autocmd User Bundler
-      \ if &makeprg !~ 'bundle' | setl makeprg^=bundle\ exec\  | endif
+\ if &makeprg !~ 'bundle' | setl makeprg^=bundle\ exec\  | endif
 
 let g:LustyJugglerSuppressRubyWarning = 1
 let g:errormarker_disablemappings = 1
@@ -263,15 +285,15 @@ let g:tex_flavor='latex'
 
 " Restore cursor position
 autocmd BufReadPost *
-  \ if line("'\"") > 1 && line("'\"") <= line("$") |
-  \   exe "normal! g`\"" |
-  \ endif
+\ if line("'\"") > 1 && line("'\"") <= line("$") |
+\   exe "normal! g`\"" |
+\ endif
 
 " Add \s and \g hotkeys to lookup blame for svn and git for highlighted lines
 vmap <Leader>s :<C-U>!svn blame <C-R>=expand("%:p") <CR> \|
-  \ sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
+\ sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
 vmap <Leader>g :<C-U>!git blame <C-R>=expand("%:p") <CR> \|
-  \ sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
+\ sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
 
 let g:tmux_navigator_no_mappings = 1
 nmap <silent> <c-h> :TmuxNavigateLeft<cr>
@@ -280,22 +302,14 @@ nmap <silent> <c-k> :TmuxNavigateUp<cr>
 nmap <silent> <c-l> :TmuxNavigateRight<cr>
 nmap <silent> <c-\> :TmuxNavigatePrevious<cr>
 
-"BEGIN_DEVASSISTANT_1
-"Turning value devassistant to 0 you will used your already defined .vimrc file
-"Turning value devassistant to 1 you will use vimrc defined by devassistant feature
 
-let devassistant=0
-if devassistant==1
- :source /usr/lib/python2.7/site-packages/devassistant-0.2.2-py2.7.egg/devassistant/templates/vimrc
-endif
-"END_DEVASSISTANT_1
 
 " Rspec.vim mappings
 autocmd BufNewFile,BufRead *_spec.rb
-  \ map <Leader>t :call RunCurrentSpecFile()<CR> |
-  \ map <Leader>s :call RunNearestSpec()<CR> |
-  \ map <Leader>l :call RunLastSpec()<CR> |
-  \ map <Leader>a :call RunAllSpecs()<CR>
+\ map <Leader>t :call RunCurrentSpecFile()<CR> |
+\ map <Leader>s :call RunNearestSpec()<CR> |
+\ map <Leader>l :call RunLastSpec()<CR> |
+\ map <Leader>a :call RunAllSpecs()<CR>
 
 set completefunc=syntaxcomplete#Complete
 
@@ -314,9 +328,9 @@ set completefunc=syntaxcomplete#Complete
 " DokuWiki plugin
 "let g:DokuVimKi_USER = "christopher.voltz@hp.com"
 "let g:DokuVimKi_URL = "https://cv-xw9400.americas.hpqcorp.net/wiki/lib/exe/xmlrpc.php"
-let g:DokuVimKi_USER = "cvoltz"
-let g:DokuVimKi_URL = "https://neelix.cce.hp.com/wiki/lib/exe/xmlrpc.php"
-:source ~/.dokuwiki_credentials
+"let g:DokuVimKi_USER = "cvoltz"
+"et g:DokuVimKi_URL = "https://neelix.cce.hp.com/wiki/lib/exe/xmlrpc.php"
+"source ~/.dokuwiki_credentials
 
 let g:rspec_command = "Dispatch rspec {spec}"
 
@@ -334,15 +348,47 @@ let g:VimuxOrientation = "v"
 
 " Setup term color support
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
-  set t_Co=256
+set t_Co=256
 endif
 
-"
+if exists('$TMUX')
+  set term=screen-256color
+endif
+
+if exists('$ITERM_PROFILE')
+  if exists('$TMUX')
+    let &t_SI = "\<Esc>[3 q"
+    let &t_EI = "\<Esc>[0 q"
+  else
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+  endif
+end
+" automatically set paste and nopaste mode for tmux at the time pasting (as
+" happens in VIM UI)
+function! WrapForTmux(s)
+  if !exists('$TMUX')
+    return a:s
+  endif
+  let tmux_start = "\<Esc>Ptmux;"
+  let tmux_end = "\<Esc>\\"
+  return tmux_start . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . tmux_end
+endfunction
+let &t_SI .= WrapForTmux("\<Esc>[?2004h")
+let &t_EI .= WrapForTmux("\<Esc>[?2004l")
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 " set foldenable         " fold by default
 set nofoldenable       " dont fold by default
 set foldmethod=indent  " fold based on indentation
 set foldnestmax=10     " deepest fold is 10 levels
 set foldlevel=1
+set foldopen=all        " automatically open folds when entering them
+set foldclose=all       " automatically close folds when leaving them
 
 " Use ack for grepping
 set grepprg=ack
@@ -364,11 +410,13 @@ set autowrite
 " c: command-line
 " l: insert, command-line, regexp-search (and others. Collectively called "Lang-Arg" pseudo-mode)
 
-map <C-C> :! make clean<enter>
-" set makeprg=build/buildit\ -l
-map <C-M> :make<enter>
-map <F8> :call DoMake()<enter>
-map <F9> :call DoTest()<enter>
+autocmd FileType c,cpp,h
+\ nmap <C-C> :! make clean<enter> |
+\ " set makeprg=build/buildit\ -l |
+\ nmap <C-M> :make<enter> |
+\ nmap <F8> :call DoMake()<enter> |
+\ nmap <F9> :call DoTest()<enter> |
+
 nmap <C-F10> :TagbarToggle<enter>
 nmap <C-F11> :TlistToggle<enter>
 nmap <C-F12> :NERDTreeToggle<enter>
@@ -414,13 +462,48 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_match_window_bottom = 0
 let g:ctrlp_match_window_reversed = 0
 let g:ctrlp_custom_ignore =
-  \ '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
+\ '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_dotfiles = 0
 let g:ctrlp_switch_buffer = 0
 
 " Vimux config
 let g:vroom_use_vimux = 1
+let g:vroom_use_zeus = 1
+let g:vroom_cucumber_path = 'bin/cucumber'
+let g:vroom_use_binstubs = 1
 
 " Map F8 to rake for Hovercraft files
 autocmd BufNewFile,BufRead *.rst setl makeprg=rake
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
+" zoom a vim pane, <C-w>= to re-balance
+nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
+nnoremap <leader>= :wincmd =<cr>
+" TMux runner
+nnoremap <leader>irb :VtrOpenRunner {'orientation': 'h', 'percentage': 50, 'cmd': 'irb'}<cr>
+" Vim rspec + tmux
+"let g:rspec_command = "Dispatch rspec {spec}"
+let g:rspec_command = "call VtrSendCommand('rspec {spec}')"
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+"BEGIN_DEVASSISTANT_1
+"Setting value devassistant to 0 will use your existing .vimrc file
+"Setting value devassistant to 1 will use the vimrc defined by the devassistant feature
+
+
+"let devassistant=0
+"if devassistant==1
+":source /usr/share/devassistant/files/snippets/vim/vimrc
+"endif
+"END_DEVASSISTANT_1
+autocmd Filetype gitcommit setlocal spell textwidth=72
+" vim-indent-guides
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black   ctermbg=black
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=darkgrey
+
+" Toggle crosshair cursor
+nnoremap <leader>ch :set cursorline cursorcolumn!<cr>
