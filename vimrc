@@ -40,6 +40,123 @@ set t_Co=256                      " Use 256 color terminal
 
 set background=dark
 
+" After adding a new plugin, reload .vimrc and run :PlugInstall. Run PlugUpdate
+" to update the plugins. Run PlugUpgrade to upgrade vim-plug.
+call plug#begin('~/.vim/plugged')
+  Plug 'mileszs/ack.vim'
+  Plug 'rking/ag.vim'
+  Plug 'vim-scripts/autoproto.vim'
+  Plug 'vim-scripts/bash-support.vim'
+  "Plug 'jlanzarotta/bufexplorer'
+  Plug 'vim-scripts/CCTree'
+  Plug 'vim-scripts/CRefVim'
+  Plug 'vim-scripts/dbext.vim'
+  Plug 'vim-scripts/DokuVimKi'
+  Plug 'chimeric/dokuwikixmlrpc'
+  Plug 'vim-scripts/echofunc.vim'
+  "Plug 'vim-scripts/errormarker.vim'
+  Plug 'sjl/gundo.vim'
+  Plug 'rgarver/Kwbd.vim'
+  Plug 'LaTeX-Box-Team/LaTeX-Box'
+  Plug 'ddollar/nerdcommenter'
+  Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+  Plug 'aklt/plantuml-syntax'
+  Plug 'vim-scripts/refactor', { 'do': '~/.vim/fix-line-endings' }
+  Plug 'vim-scripts/Rename2'
+  Plug 'MicahElliott/Rocannon'
+  Plug 'm2ym/rsense'
+  Plug 'bcaccinolo/rspec-vim-folding'
+  Plug 'vim-scripts/ShowTrailingWhitespace'
+  Plug 'vim-scripts/Specky'
+  Plug 'ervandew/supertab'
+  Plug 'AndrewRadev/switch.vim'
+  "Plug 'scrooloose/syntastic'
+  Plug 'godlygeek/tabular'
+  Plug 'majutsushi/tagbar'
+  Plug 'tomtom/tcomment_vim'
+  Plug 'tomtom/tlib_vim'
+  Plug 'jgdavey/tslime.vim'
+  Plug 'vim-scripts/vcscommand.vim'
+  Plug 'MarcWeber/vim-addon-mw-utils'
+  Plug 'chase/vim-ansible-yaml'
+  "Plug 'vim-scripts/vim-autocomplpop'
+  "Plug 'onehouse/vim-bufexplorer'
+  Plug 'jeetsukumaran/vim-buffergator'
+  Plug 'tpope/vim-bundler'
+  Plug 'ap/vim-css-color'
+  Plug 'tpope/vim-cucumber'
+  Plug 'tpope/vim-dispatch'
+  Plug 'nblock/vim-dokuwiki'
+  Plug 'Lokaltog/vim-easymotion'
+  Plug 'tpope/vim-endwise'
+  Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-git'
+  Plug 'tpope/vim-haml'
+  Plug 'nathanaelkane/vim-indent-guides'
+  Plug 'mitsuhiko/vim-jinja'
+  Plug 'clones/vim-l9'
+  Plug 'vim-latex/vim-latex'
+  Plug 'groenewege/vim-less'
+  Plug 'reinh/vim-makegreen'
+  Plug 'tpope/vim-markdown'
+  Plug 'edsono/vim-matchit'
+  "Plug 'sickill/vim-pasta'
+  Plug 'shemerey/vim-peepopen'
+  Plug 'Lokaltog/vim-powerline'
+  Plug 'shemerey/vim-project'
+  Plug 'tpope/vim-ragtag'
+  Plug 'tpope/vim-rails'
+  Plug 'tpope/vim-rake'
+  Plug 'quentindecock/vim-cucumber-align-pipes'
+  Plug 'depuracao/vim-rdoc'
+  Plug 'airblade/vim-rooter'
+  Plug 'thoughtbot/vim-rspec'
+  Plug 'ngmy/vim-rubocop'
+  Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+  Plug 'sunaku/vim-ruby-minitest'
+  Plug 'ecomba/vim-ruby-refactoring'
+  "Plug 'slim-template/vim-slim'
+  Plug 'gabebw/vim-spec-runner'
+  Plug 'tpope/vim-surround'
+  Plug 'thisivan/vim-taglist'
+  Plug 'nelstrom/vim-textobj-rubyblock'
+  Plug 'kana/vim-textobj-user'
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'christoomey/vim-tmux-runner'
+  Plug 'jgdavey/vim-turbux'
+  Plug 'tpope/vim-unimpaired'
+  Plug 'benmills/vimux'
+  Plug 'skalnik/vim-vroom'
+  Plug 'vim-scripts/vtreeexplorer'
+  Plug 'wannesm/wmgraphviz.vim'
+  Plug 'vim-scripts/ZoomWin'
+
+  "Plug 'airblade/fuzzyfinder_textmate'
+  "Plug 'sjbach/lusty'
+  Plug 'kien/ctrlp.vim'
+
+  "Plug 'garbas/vim-snipmate'
+  "Plug 'msanders/snipmate.vim'
+  "Plug 'tlavi/SnipMgr'
+  Plug 'SirVer/ultisnips'
+  Plug 'honza/vim-snippets'
+  Plug 'scrooloose/snipmate-snippets'
+
+  " For C files, copy
+  " edit to set flags for compling. Alternatively, use YCM-Generator to create
+  " the file.
+  " vim/plugged/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py and
+  Plug 'Valloric/YouCompleteMe'
+call plug#end()
+
+" Disable asking whether it is OK to run .ycm_extra_conf.py
+let g:ycm_confirm_extra_conf = 0
+
+" Trigger configuration. Do not use <tab> since it will conflict with https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-space>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
 if has('gui_running')
 ":colorscheme github
 :colorscheme koehler
@@ -69,7 +186,7 @@ let g:BASH_AuthorName   = 'Christopher Voltz'
 let g:BASH_AuthorRef    = 'CDV'
 let g:BASH_Email        = 'christopher.voltz@hp.com'
 let g:BASH_Company      = 'Hewlett-Packard'
-let g:BASH_CopyrightHolder = "(C) Hewlett-Packard, 2013"
+let g:BASH_CopyrightHolder = "(C) Hewlett Packard Enterprise, 2013"
 let &errorformat="%f:%l:%c: %t%*[^:]:%m,%f:%l: %t%*[^:]:%m," . &errorformat
 
 " Conversion HTML (:help 2html.vim)
@@ -79,7 +196,7 @@ let g:use_xhtml=1
 set fileencodings=ucs-bom,utf8
 
 " Load all of the plugins in ~/.vim/bundle
-silent! call pathogen#infect()
+" silent! call pathogen#infect()
 
 syntax on		" Enable syntax highlighting
 filetype on		" Enable filetype detection
@@ -224,7 +341,6 @@ autocmd BufNewFile,BufRead Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.i
 " Automatic fold settings for specific files.
 autocmd FileType c,cpp,h,vim,xml,html,xhtml,ruby setlocal foldmethod=syntax
 autocmd FileType c,cpp,h,vim,xml,html,xhtml,ruby normal zR
-
 autocmd FileType c,cpp,h call HighlightWideText()
 "autocmd FileType c,cpp,h set foldmethod=syntax
 autocmd FileType ruby setlocal foldmethod=syntax shiftwidth=2 tabstop=2 expandtab softtabstop=2
@@ -302,8 +418,6 @@ nmap <silent> <c-k> :TmuxNavigateUp<cr>
 nmap <silent> <c-l> :TmuxNavigateRight<cr>
 nmap <silent> <c-\> :TmuxNavigatePrevious<cr>
 
-
-
 " Rspec.vim mappings
 autocmd BufNewFile,BufRead *_spec.rb
 \ map <Leader>t :call RunCurrentSpecFile()<CR> |
@@ -322,8 +436,6 @@ set completefunc=syntaxcomplete#Complete
 " \        ':\(\k\+\)\@>\%(\s*=>\)\@!': '"\1"\2',
 " \      },
 " \ ]
-
-:source ~/.vim/bundle/cucumbertables.vim
 
 " DokuWiki plugin
 "let g:DokuVimKi_USER = "christopher.voltz@hp.com"
@@ -364,6 +476,7 @@ if exists('$ITERM_PROFILE')
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   endif
 end
+
 " automatically set paste and nopaste mode for tmux at the time pasting (as
 " happens in VIM UI)
 function! WrapForTmux(s)
@@ -467,6 +580,10 @@ let g:ctrlp_working_path_mode = 0
 let g:ctrlp_dotfiles = 0
 let g:ctrlp_switch_buffer = 0
 
+" Make CtrlP use ag for listing the files. Way faster and no useless files.
+let g:ctrlp_user_command = 'ag %s -l --hidden --nocolor -g ""'
+let g:ctrlp_use_caching = 0
+
 " Vimux config
 let g:vroom_use_vimux = 1
 let g:vroom_use_zeus = 1
@@ -475,13 +592,17 @@ let g:vroom_use_binstubs = 1
 
 " Map F8 to rake for Hovercraft files
 autocmd BufNewFile,BufRead *.rst setl makeprg=rake
+
 " automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
+
 " zoom a vim pane, <C-w>= to re-balance
 nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
 nnoremap <leader>= :wincmd =<cr>
+
 " TMux runner
 nnoremap <leader>irb :VtrOpenRunner {'orientation': 'h', 'percentage': 50, 'cmd': 'irb'}<cr>
+
 " Vim rspec + tmux
 "let g:rspec_command = "Dispatch rspec {spec}"
 let g:rspec_command = "call VtrSendCommand('rspec {spec}')"
@@ -489,17 +610,18 @@ map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
+
 "BEGIN_DEVASSISTANT_1
 "Setting value devassistant to 0 will use your existing .vimrc file
 "Setting value devassistant to 1 will use the vimrc defined by the devassistant feature
-
-
 "let devassistant=0
 "if devassistant==1
 ":source /usr/share/devassistant/files/snippets/vim/vimrc
 "endif
 "END_DEVASSISTANT_1
+
 autocmd Filetype gitcommit setlocal spell textwidth=72
+
 " vim-indent-guides
 let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black   ctermbg=black

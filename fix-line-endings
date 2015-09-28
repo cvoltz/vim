@@ -1,2 +1,2 @@
 #!/bin/bash
-find ~/.vim/bundle -type f -iname '*.vim' | xargs -n1 dos2unix -f
+find ~/.vim/plugged -type f -iname '*.vim' | xargs -n1 dos2unix -f
