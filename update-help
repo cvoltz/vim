@@ -1,0 +1,2 @@
+#!/bin/bash
+find ~/.vim/plugged/ -maxdepth 4 -name doc -type d -print -exec vim -c "helptags \{}" -c q \;
