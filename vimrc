@@ -564,7 +564,7 @@ map <leader>tn :tabnext<cr>
 map <leader>tp :tabprevious<cr>
 map <leader>tf :tabfirst<cr>
 map <leader>tl :tablast<cr>
-map <leader>tm :tabmove
+map <quiet> <leader>tm :tabmove
 nnoremap <C-Left> :tabprevious<CR>
 nnoremap <C-Right> :tabnext<CR>
 nnoremap <silent><A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
@@ -646,7 +646,7 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black   ctermbg=black
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=darkgrey
 
 " Toggle crosshair cursor
-nnoremap <leader>ch :set cursorline cursorcolumn!<cr>
+nnoremap <quiet> <leader>ch :set cursorline cursorcolumn!<cr>
 
 " Mappings already in use
 " Mapping          Mode Plugin     Function
