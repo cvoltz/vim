@@ -40,9 +40,23 @@ set t_Co=256                      " Use 256 color terminal
 
 set background=dark
 
+" Install vim-plug if it isn't installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
+
+" Install missing plugins
+autocmd VimEnter *
+  \| if !empty(filter(copy(g:plugs), '!isdirectory(v:val.dir)'))
+  \|   PlugInstall | q
+  \| endif
+
 " After adding a new plugin, reload .vimrc and run :PlugInstall. Run PlugUpdate
 " to update the plugins. Run PlugUpgrade to upgrade vim-plug.
-call plug#begin('~/.vim/plugged')
+source /home/cvoltz/.vim/autoload/plug.vim
+call plug#begin()
   Plug 'mileszs/ack.vim'
   Plug 'rking/ag.vim'
   Plug 'vim-scripts/autoproto.vim'
