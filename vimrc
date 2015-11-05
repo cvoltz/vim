@@ -64,7 +64,7 @@ call plug#begin()
   "Plug 'jlanzarotta/bufexplorer'
   Plug 'vim-scripts/CCTree'
   Plug 'vim-scripts/CRefVim'
-  Plug 'vim-scripts/dbext.vim'
+  "Plug 'vim-scripts/dbext.vim'
   Plug 'vim-scripts/DokuVimKi'
   Plug 'chimeric/dokuwikixmlrpc'
   Plug 'vim-scripts/echofunc.vim'
@@ -90,7 +90,7 @@ call plug#begin()
   Plug 'tomtom/tcomment_vim'
   Plug 'tomtom/tlib_vim'
   Plug 'jgdavey/tslime.vim'
-  Plug 'vim-scripts/vcscommand.vim'
+  "Plug 'vim-scripts/vcscommand.vim'
   Plug 'MarcWeber/vim-addon-mw-utils'
   Plug 'chase/vim-ansible-yaml'
   "Plug 'onehouse/vim-bufexplorer'
@@ -138,7 +138,7 @@ call plug#begin()
   Plug 'kana/vim-textobj-user'
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'christoomey/vim-tmux-runner'
-  Plug 'jgdavey/vim-turbux'
+  "Plug 'jgdavey/vim-turbux'
   Plug 'tpope/vim-unimpaired'
   Plug 'benmills/vimux'
   Plug 'skalnik/vim-vroom'
@@ -645,3 +645,14 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=darkg
 
 " Toggle crosshair cursor
 nnoremap <leader>ch :set cursorline cursorcolumn!<cr>
+
+" Mappings already in use
+" Mapping          Mode Plugin     Function
+"<LocalLeader>ch   n    .vimrc     :set cursorline cursorcolumn!<CR>
+"<LocalLeader>cd   n    vcscommand <Plug>VCSDiff
+"<LocalLeader>ct   n    vcscommand :call <SNR>05_ExecuteExtensionMapping('t')<CR>
+"<LocalLeader>se   n    dbext      <Plug>DBExecSQLUnderCursor
+"<LocalLeader>se   v    dbext      <Plug>DBExecVisualSQL
+"<LocalLeader>sas  n    dbext      :1,$DBVarRangeAssign<CR>
+"<LocalLeader>tm   n    turbux     <Plug>SendTestToTmux
+"<LocalLeader>tm   v    .vimrc     :tabmove
