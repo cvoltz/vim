@@ -109,7 +109,9 @@ call plug#begin()
   Plug 'tpope/vim-git'
   Plug 'tpope/vim-haml'
   Plug 'nathanaelkane/vim-indent-guides'
+  Plug 'michaeljsmith/vim-indent-object'
   Plug 'mitsuhiko/vim-jinja'
+  Plug 'elzr/vim-json'
   Plug 'clones/vim-l9'
   Plug 'vim-latex/vim-latex'
   Plug 'groenewege/vim-less'
@@ -166,6 +168,9 @@ call plug#begin()
   " vim/plugged/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py and
   Plug 'Valloric/YouCompleteMe'
 call plug#end()
+
+" Disable concealing double quotes in JSON files
+let g:vim_json_syntax_conceal = 0
 
 " Disable asking whether it is OK to run .ycm_extra_conf.py
 let g:ycm_confirm_extra_conf = 0
