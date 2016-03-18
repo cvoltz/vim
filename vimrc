@@ -91,7 +91,6 @@ call plug#begin()
   Plug 'tomtom/tcomment_vim'
   Plug 'tomtom/tlib_vim'
   Plug 'jgdavey/tslime.vim'
-  "Plug 'vim-scripts/vcscommand.vim'
   Plug 'MarcWeber/vim-addon-mw-utils'
   Plug 'chase/vim-ansible-yaml'
   "Plug 'onehouse/vim-bufexplorer'
@@ -664,8 +663,6 @@ nnoremap <quiet> <leader>ch :set cursorline cursorcolumn!<cr>
 " Mappings already in use
 " Mapping          Mode Plugin     Function
 "<LocalLeader>ch   n    .vimrc     :set cursorline cursorcolumn!<CR>
-"<LocalLeader>cd   n    vcscommand <Plug>VCSDiff
-"<LocalLeader>ct   n    vcscommand :call <SNR>05_ExecuteExtensionMapping('t')<CR>
 "<LocalLeader>se   n    dbext      <Plug>DBExecSQLUnderCursor
 "<LocalLeader>se   v    dbext      <Plug>DBExecVisualSQL
 "<LocalLeader>sas  n    dbext      :1,$DBVarRangeAssign<CR>
