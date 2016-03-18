@@ -365,10 +365,12 @@ runtime macros/matchit.vim
 
 autocmd BufNewFile,BufRead Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*,*.rb set filetype=ruby
 
+" Highlight text past 80 columns
+autocmd FileType * call HighlightWideText()
+
 " Automatic fold settings for specific files.
 autocmd FileType c,cpp,h,vim,xml,html,xhtml,ruby setlocal foldmethod=syntax
 autocmd FileType c,cpp,h,vim,xml,html,xhtml,ruby normal zR
-autocmd FileType c,cpp,h call HighlightWideText()
 "autocmd FileType c,cpp,h set foldmethod=syntax
 autocmd FileType ruby setlocal foldmethod=syntax shiftwidth=2 tabstop=2 expandtab softtabstop=2
 autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
