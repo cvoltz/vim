@@ -672,3 +672,6 @@ nnoremap <quiet> <leader>ch :set cursorline cursorcolumn!<cr>
 "<LocalLeader>sas  n    dbext      :1,$DBVarRangeAssign<CR>
 "<LocalLeader>tm   n    turbux     <Plug>SendTestToTmux
 "<LocalLeader>tm   v    .vimrc     :tabmove
+
+" Disable search highlights
+nnoremap <quiet> // :nohlsearch
