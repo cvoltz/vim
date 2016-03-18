@@ -85,7 +85,7 @@ call plug#begin()
   Plug 'vim-scripts/Specky'
   Plug 'ervandew/supertab'
   Plug 'AndrewRadev/switch.vim'
-  "Plug 'scrooloose/syntastic'
+  Plug 'scrooloose/syntastic'
   Plug 'godlygeek/tabular'
   Plug 'majutsushi/tagbar'
   Plug 'tomtom/tcomment_vim'
