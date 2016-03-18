@@ -59,7 +59,7 @@ source /home/cvoltz/.vim/autoload/plug.vim
 call plug#begin()
   Plug 'mileszs/ack.vim'
   Plug 'rking/ag.vim'
-  Plug 'vim-scripts/autoproto.vim'
+  Plug 'cvoltz/autoproto.vim'
   Plug 'vim-scripts/bash-support.vim'
   "Plug 'jlanzarotta/bufexplorer'
   Plug 'vim-scripts/CCTree'
@@ -70,12 +70,12 @@ call plug#begin()
   Plug 'vim-scripts/echofunc.vim'
   "Plug 'vim-scripts/errormarker.vim'
   Plug 'sjl/gundo.vim'
-  Plug 'rgarver/Kwbd.vim'
+  Plug 'cvoltz/Kwbd.vim'
   Plug 'LaTeX-Box-Team/LaTeX-Box'
   Plug 'ddollar/nerdcommenter'
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   Plug 'aklt/plantuml-syntax'
-  Plug 'vim-scripts/refactor', { 'do': '~/.vim/fix-line-endings' }
+  Plug 'cvoltz/refactor'
   Plug 'vim-scripts/Rename2'
   Plug 'MicahElliott/Rocannon'
   Plug 'm2ym/rsense'
