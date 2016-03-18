@@ -56,6 +56,7 @@ autocmd VimEnter *
 " After adding a new plugin, reload .vimrc and run :PlugInstall. Run PlugUpdate
 " to update the plugins. Run PlugUpgrade to upgrade vim-plug.
 source /home/cvoltz/.vim/autoload/plug.vim
+
 call plug#begin()
   Plug 'mileszs/ack.vim'
   Plug 'rking/ag.vim'
@@ -175,20 +176,21 @@ let g:vim_json_syntax_conceal = 0
 " Disable asking whether it is OK to run .ycm_extra_conf.py
 let g:ycm_confirm_extra_conf = 0
 
-" Trigger configuration. Do not use <tab> since it will conflict with https://github.com/Valloric/YouCompleteMe.
+" Trigger configuration. Do not use <tab> since it will conflict with
+" https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<c-space>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 if has('gui_running')
-":colorscheme github
-:colorscheme koehler
-:set guifont=Liberation\ Mono\ 10 " Font family and font size.
-:set guioptions-=T               " Hide toolbar.
-:set lines=58 columns=102        " Window dimensions.
+  ":colorscheme github
+  :colorscheme koehler
+  :set guifont=Liberation\ Mono\ 10 " Font family and font size.
+  :set guioptions-=T               " Hide toolbar.
+  :set lines=58 columns=102        " Window dimensions.
 else
-":colorscheme rubyblue
-":colorscheme koehler
+  ":colorscheme rubyblue
+  ":colorscheme koehler
 endif
 "colorscheme vividchalk
 "colorscheme topfunky-light
@@ -197,11 +199,11 @@ endif
 
 let g:SuperTabDefaultCompletionType='context'
 if has('gui_running')
-let g:SuperTabMappingForward='<c-space>'
-let g:SuperTabMappingBackward='<s-c-space>'
+  let g:SuperTabMappingForward='<c-space>'
+  let g:SuperTabMappingBackward='<s-c-space>'
 else
-let g:SuperTabMappingForward='<nul>'
-let g:SuperTabMappingBackward='<s-nul>'
+  let g:SuperTabMappingForward='<nul>'
+  let g:SuperTabMappingBackward='<s-nul>'
 endif
 
 " BASH support
@@ -242,13 +244,14 @@ let c_space_errors=1
 let g:ShowTrailingWhitespace=1
 highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
 
-" Highlight text beyond 80 columns for C files
-function HighlightWideText()
-if exists('+colorcolumn')
-set colorcolumn=80
-else
-au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
-endif
+" Highlight text beyond 80 columns with a grey background
+function! HighlightWideText()
+  if exists('+colorcolumn')
+    let &colorcolumn=join(range(81,999),",")
+    highlight ColorColumn ctermbg=233 guibg=#0c0c0c
+  else
+    au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+  endif
 endfunction
 
 " Autowrap text to 80 chars for certain filetypes
@@ -263,26 +266,26 @@ autocmd FileType gitcommit setlocal textwidth=80
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
 function DoRake()
-exec "w"
-exec "!xterm -e /bin/bash -c rake &"
-exec "i"
+  exec "w"
+  exec "!xterm -e /bin/bash -c rake &"
+  exec "i"
 endfunction
 
 function DoMake()
-exec "w"
-exec "!xterm -e /bin/bash -c make &"
-exec "i"
+  exec "w"
+  exec "!xterm -e /bin/bash -c make &"
+  exec "i"
 endfunction
 
 function DoReset()
-exec "!xterm -e /bin/bash -c make clean && make clobber &"
-exec "i"
+  exec "!xterm -e /bin/bash -c make clean && make clobber &"
+  exec "i"
 endfunction
 
 function DoTest()
-exec "w"
-exec "!xterm -e /bin/bash -c make test &"
-exec "i"
+  exec "w"
+  exec "!xterm -e /bin/bash -c make test &"
+  exec "i"
 endfunction
 
 " Adjust QuickFix window size to the optimal # of lines (minimum 3, maximum 10)
@@ -293,57 +296,57 @@ endfunction
 
 " Automatically load and enable cscope if cscope.out is avaialable
 if has("cscope")
-set csto=0 " search cscope before ctags
-set cscopetag
-set nocscopeverbose
-" add any database in current directory
-if filereadable("cscope.out")
-cs add cscope.out
-" else add database pointed to by environment
-elseif $CSCOPE_DB != ""
-cs add $CSCOPE_DB
-endif
-set cscopeverbose
+  set csto=0 " search cscope before ctags
+  set cscopetag
+  set nocscopeverbose
+  " add any database in current directory
+  if filereadable("cscope.out")
+    cs add cscope.out
+    " else add database pointed to by environment
+  elseif $CSCOPE_DB != ""
+      cs add $CSCOPE_DB
+  endif
+  set cscopeverbose
 
-" Map cscope functionality
-"   's'   symbol: find all references to the token under cursor
-"   'g'   global: find global definition(s) of the token under cursor
-"   'c'   calls:  find all calls to the function name under cursor
-"   't'   text:   find all instances of the text under cursor
-"   'e'   egrep:  egrep search for the word under cursor
-"   'f'   file:   open the filename under cursor
-"   'i'   includes: find files that include the filename under cursor
-"   'd'   called: find functions that function under cursor calls
-nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+  " Map cscope functionality
+  "   's'   symbol: find all references to the token under cursor
+  "   'g'   global: find global definition(s) of the token under cursor
+  "   'c'   calls:  find all calls to the function name under cursor
+  "   't'   text:   find all instances of the text under cursor
+  "   'e'   egrep:  egrep search for the word under cursor
+  "   'f'   file:   open the filename under cursor
+  "   'i'   includes: find files that include the filename under cursor
+  "   'd'   called: find functions that function under cursor calls
+  nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+  nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+  nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 
-" Using 'CTRL-/' then a search type makes the vim window
-" split horizontally, with search result displayed in
-" the new window.
-nmap <C-/>s :scs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <C-/>g :scs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <C-/>c :scs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <C-/>t :scs find t <C-R>=expand("<cword>")<CR><CR>
-nmap <C-/>e :scs find e <C-R>=expand("<cword>")<CR><CR>
-nmap <C-/>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
-nmap <C-/>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-nmap <C-/>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+  " Using 'CTRL-/' then a search type makes the vim window
+  " split horizontally, with search result displayed in
+  " the new window.
+  nmap <C-/>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-/>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-/>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-/>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-/>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-/>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+  nmap <C-/>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+  nmap <C-/>d :scs find d <C-R>=expand("<cword>")<CR><CR>
 
-" Hitting Shift-Ctrl-/ before the search type does a vertical
-" split instead of a horizontal one
-nmap <S-C-/>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <S-C-/>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <S-C-/>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <S-C-/>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-nmap <S-C-/>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-nmap <S-C-/>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-nmap <S-C-/>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+  " Hitting Shift-Ctrl-/ before the search type does a vertical
+  " split instead of a horizontal one
+  nmap <S-C-/>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+  nmap <S-C-/>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+  nmap <S-C-/>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+  nmap <S-C-/>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+  nmap <S-C-/>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+  nmap <S-C-/>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+  nmap <S-C-/>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 endif
 
 let g:speckyBannerKey        = "<C-S>b"
@@ -389,7 +392,8 @@ map <Leader>rf :w<cr>:!bin/rspec % --format documentation --no-color<cr>
 " Run current RSpec test
 map <Leader>rl :w<cr>:exe "!bin/rspec --no-color %" . ":" . line(".")<cr>
 
-" RSpec is clever enough to work out test to run if cursor is on any line within the test
+" RSpec is clever enough to work out test to run if cursor is on any line
+" within the test.
 " Run all RSpec tests
 map <Leader>rt :w<cr>:!bin/rspec --format documentation< --no-color<cr>
 
@@ -483,7 +487,7 @@ let g:VimuxOrientation = "v"
 
 " Setup term color support
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
-set t_Co=256
+  set t_Co=256
 endif
 
 if exists('$TMUX')
@@ -510,14 +514,18 @@ function! WrapForTmux(s)
   let tmux_end = "\<Esc>\\"
   return tmux_start . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . tmux_end
 endfunction
+
 let &t_SI .= WrapForTmux("\<Esc>[?2004h")
 let &t_EI .= WrapForTmux("\<Esc>[?2004l")
+
 function! XTermPasteBegin()
   set pastetoggle=<Esc>[201~
   set paste
   return ""
 endfunction
+
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
 " set foldenable         " fold by default
 set nofoldenable       " dont fold by default
 set foldmethod=indent  " fold based on indentation
