@@ -62,7 +62,7 @@ call plug#begin()
   Plug 'rking/ag.vim'
   Plug 'cvoltz/autoproto.vim'
   Plug 'vim-scripts/bash-support.vim'
-  "Plug 'jlanzarotta/bufexplorer'
+  Plug 'jlanzarotta/bufexplorer'
   Plug 'vim-scripts/CCTree'
   Plug 'vim-scripts/CRefVim'
   "Plug 'vim-scripts/dbext.vim'
