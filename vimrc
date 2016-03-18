@@ -269,24 +269,24 @@ autocmd FileType gitcommit setlocal textwidth=80
 " remove trailing whitespace using \W
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
-function DoRake()
+function! DoRake()
   exec "w"
   exec "!xterm -e /bin/bash -c rake &"
   exec "i"
 endfunction
 
-function DoMake()
+function! DoMake()
   exec "w"
   exec "!xterm -e /bin/bash -c make &"
   exec "i"
 endfunction
 
-function DoReset()
+function! DoReset()
   exec "!xterm -e /bin/bash -c make clean && make clobber &"
   exec "i"
 endfunction
 
-function DoTest()
+function! DoTest()
   exec "w"
   exec "!xterm -e /bin/bash -c make test &"
   exec "i"
