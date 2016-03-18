@@ -363,9 +363,6 @@ let g:speckyWindowType       = 0
 
 runtime macros/matchit.vim
 
-" use Jamis Buck's file opening plugin
-map <Leader>e :FuzzyFinderTextMate<Enter>
-
 autocmd BufNewFile,BufRead Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*,*.rb set filetype=ruby
 
 " Automatic fold settings for specific files.
