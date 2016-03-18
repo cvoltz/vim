@@ -675,3 +675,9 @@ nnoremap <quiet> <leader>ch :set cursorline cursorcolumn!<cr>
 
 " Disable search highlights
 nnoremap <quiet> // :nohlsearch
+
+" Auto-reload vimrc when it is changed
+augroup reload_vimrc
+    autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END
