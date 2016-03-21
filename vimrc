@@ -167,10 +167,7 @@ call plug#begin()
   Plug 'honza/vim-snippets'
   Plug 'scrooloose/snipmate-snippets'
 
-  " For C files, copy
-  " edit to set flags for compling. Alternatively, use YCM-Generator to create
-  " the file.
-  " vim/plugged/YouCompleteMe/third_party/ycmd/examples/.ycm_extra_conf.py and
+  " Run ~/.vim/build-you-complete-me when YouCompleteMe is updated
   Plug 'Valloric/YouCompleteMe'
 call plug#end()
 
