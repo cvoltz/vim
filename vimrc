@@ -414,7 +414,7 @@ let g:LustyJugglerSuppressRubyWarning = 1
 let g:errormarker_disablemappings = 1
 
 let g:rooter_patterns = ['Rakefile', '.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/']
-"map <silent> <unique> <Leader>lcd <Plug>RooterChangeToRootDirectory
+map <silent> <unique> <Leader>lcd <Plug>RooterChangeToRootDirectory
 " Disable automatic change of directory to project root
 " let g:rooter_manual_only = 1
 
