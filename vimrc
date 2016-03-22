@@ -167,6 +167,7 @@ call plug#begin()
   Plug 'honza/vim-snippets'
   Plug 'scrooloose/snipmate-snippets'
 
+  Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
   " Run ~/.vim/build-you-complete-me when YouCompleteMe is updated
   Plug 'Valloric/YouCompleteMe'
 call plug#end()
