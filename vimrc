@@ -13,32 +13,52 @@ set nowritebackup                 " And again.
 set ruler                         " Show cursor position.
 set scrolloff=3                   " Show 3 lines of context around the cursor.
 set showcmd                       " Display incomplete commands.
-set showmode                      " Display the mode you're in.
 set smartcase                     " But case-sensitive if expression contains a capital letter.
 set title                         " Set the terminal's title
 "set visualbell                   " Flash when a beep would have sounded
 set wildmenu                      " Enhanced command line completion.
 set wildmode=longest,list:longest " Complete files like a shell.
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+set wildignore+=*.so,*.swp,*.zip
 set wrap                          " Turn on line wrapping.
 "set completeopt=menu,preview
 "set complete=.,w,b,u,t           " Get completion keywords from current file, other windows, buffers, and tags
 "set complete=.,t                  " Get completion keywords from current file, other windows, buffers, and tags
+set completefunc=syntaxcomplete#Complete
 set sessionoptions+=localoptions,resize,winpos " When a session is saved, save the local options and mappings, the size of the window, and its position
 set autoindent                    " Always set autoindenting on
 set copyindent                    " Copy the previous indentation on autoindenting
 set expandtab                     " Insert spaces instead of tabs
-
-" Changes for Powerline
-set laststatus=2                  " Show the status line all the time
-" let g:Powerline_symbols='fancy'   " Patch font to show fancy symbols
-set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{fugitive#statusline()}%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c%V\ %)%P
-
 set antialias                     " Smooth fonts.
 set encoding=utf-8                " Use UTF-8 everywhere.
-set t_Co=256                      " Use 256 color terminal
+set laststatus=2                  " Show the status line all the time
+set showtabline=2                 " Always display the tabline
+set noshowmode                    " Hide the default mode text
+set clipboard=unnamed,unnamedplus,autoselectplus
+set viminfo='100,:100,/50,h,f1    " Save 100 file marks, 100 lines command-line history, 50 last searches, disable hlsearch loading, enable saving file marks
 
-set background=dark
+" Setup term color support
+if exists('$TMUX')
+  set term=screen-256color
+endif
+
+if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
+  set t_Co=256
+endif
+
+if $BACKGROUND ==? "light"
+  let g:background="light"
+else
+  let g:background="dark"
+endif
+
+" Change vim-textobj-comment mappings
+let g:textobj_comment_no_default_key_mappings=1
+omap ax <Plug>(textobj-comment-a)
+xmap ax <Plug>(textobj-comment-a)
+omap ix <Plug>(textobj-comment-i)
+xmap ix <Plug>(textobj-comment-i)
+omap aX <Plug>(textobj-comment-big-a)
+xmap aX <Plug>(textobj-comment-big-a)
 
 " Install vim-plug if it isn't installed
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -60,24 +80,30 @@ source /home/cvoltz/.vim/autoload/plug.vim
 call plug#begin()
   Plug 'mileszs/ack.vim'
   Plug 'rking/ag.vim'
+  "Plug 'pseewald/vim-anyfold'
   Plug 'cvoltz/autoproto.vim'
-  Plug 'vim-scripts/bash-support.vim'
+  "Plug 'vim-scripts/bash-support.vim'
   Plug 'jlanzarotta/bufexplorer'
   Plug 'vim-scripts/CCTree'
   Plug 'vim-scripts/CRefVim'
   "Plug 'vim-scripts/dbext.vim'
-  Plug 'vim-scripts/DokuVimKi'
-  Plug 'chimeric/dokuwikixmlrpc'
   Plug 'vim-scripts/echofunc.vim'
   "Plug 'vim-scripts/errormarker.vim'
   Plug 'sjl/gundo.vim'
+  Plug 'Rykka/InstantRst'
   Plug 'cvoltz/Kwbd.vim'
   Plug 'LaTeX-Box-Team/LaTeX-Box'
   Plug 'ddollar/nerdcommenter'
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   Plug 'aklt/plantuml-syntax'
+  "Plug 'vim-scripts/pylint.vim'
+  "Plug 'vim-scripts/pylint-mode'
   Plug 'cvoltz/refactor'
   Plug 'vim-scripts/Rename2'
+
+  "Disable due to slow startup time
+  "Plug 'Rykka/riv.vim'
+
   Plug 'MicahElliott/Rocannon'
   Plug 'm2ym/rsense'
   Plug 'bcaccinolo/rspec-vim-folding'
@@ -94,41 +120,47 @@ call plug#begin()
   Plug 'MarcWeber/vim-addon-mw-utils'
   Plug 'chase/vim-ansible-yaml'
   "Plug 'onehouse/vim-bufexplorer'
-  Plug 'jeetsukumaran/vim-buffergator'
+  "Plug 'jeetsukumaran/vim-buffergator'
   Plug 'tpope/vim-bundler'
   Plug 'ap/vim-css-color'
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-cucumber'
   Plug 'quentindecock/vim-cucumber-align-pipes'
   Plug 'tpope/vim-dispatch'
-  Plug 'nblock/vim-dokuwiki'
+  if filereadable($HOME."/.vim/dokuvimki")
+    Plug 'kynan/dokuvimki'
+  endif
   Plug 'junegunn/vim-easy-align'
   Plug 'Lokaltog/vim-easymotion'
   Plug 'tpope/vim-endwise'
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-git'
+  Plug 'fatih/vim-go'
   Plug 'tpope/vim-haml'
   Plug 'nathanaelkane/vim-indent-guides'
   Plug 'michaeljsmith/vim-indent-object'
   Plug 'mitsuhiko/vim-jinja'
   Plug 'elzr/vim-json'
   Plug 'clones/vim-l9'
-  Plug 'vim-latex/vim-latex'
+  "Plug 'vim-latex/vim-latex'
+  Plug 'killphi/vim-legend'
   Plug 'groenewege/vim-less'
+  "Plug 'rakr/vim-one'
   Plug 'reinh/vim-makegreen'
   Plug 'tpope/vim-markdown'
-  Plug 'edsono/vim-matchit'
+  Plug 'vim-scripts/matchit.zip'
   "Plug 'sickill/vim-pasta'
   Plug 'shemerey/vim-peepopen'
-  Plug 'Lokaltog/vim-powerline'
   Plug 'shemerey/vim-project'
   Plug 'tpope/vim-ragtag'
   Plug 'tpope/vim-rails'
   Plug 'tpope/vim-rake'
+  Plug 'rainerborene/vim-reek'
   Plug 'tpope/vim-repeat'
   Plug 'depuracao/vim-rdoc'
   Plug 'airblade/vim-rooter'
-  Plug 'thoughtbot/vim-rspec'
+  "Plug 'thoughtbot/vim-rspec'
+  Plug 'bdauria/vim-rspec-cucumber'
   Plug 'ngmy/vim-rubocop'
   Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
   Plug 'sunaku/vim-ruby-minitest'
@@ -139,25 +171,29 @@ call plug#begin()
   Plug 'christoomey/vim-system-copy'
   Plug 'tpope/vim-surround'
   Plug 'thisivan/vim-taglist'
-  Plug 'kana/vim-textobj-indent'
-  Plug 'kana/vim-textobj-line'
-  Plug 'nelstrom/vim-textobj-rubyblock'
-  Plug 'kana/vim-textobj-user'
-  Plug 'christoomey/vim-titlecase'
-  Plug 'christoomey/vim-tmux-navigator'
-  Plug 'christoomey/vim-tmux-runner'
+  "Plug 'lervag/vimtex'
+  Plug 'vim-scripts/voom'
+  Plug 'vim-scripts/xterm16.vim'
+
+  " Disable concealing double quotes in JSON files'
   "Plug 'jgdavey/vim-turbux'
   Plug 'tpope/vim-unimpaired'
-  Plug 'benmills/vimux'
   Plug 'skalnik/vim-vroom'
   Plug 'vim-scripts/visualrepeat'
+  Plug 'vim-scripts/vst'
   Plug 'vim-scripts/vtreeexplorer'
+  Plug 'posva/vim-vue'
   Plug 'wannesm/wmgraphviz.vim'
+  Plug 'KabbAmine/zeavim.vim'
   Plug 'vim-scripts/ZoomWin'
 
   "Plug 'airblade/fuzzyfinder_textmate'
   "Plug 'sjbach/lusty'
-  Plug 'kien/ctrlp.vim'
+  Plug 'ctrlpvim/ctrlp.vim'
+
+  " When updated, run:
+  " cd ~/.vim/plugged/command-t/ruby/command-t; make clean; ruby extconf.rb; make
+  Plug 'wincent/command-t'
 
   "Plug 'tlavi/SnipMgr'
   "Plug 'msanders/snipmate.vim'
@@ -170,34 +206,35 @@ call plug#begin()
   Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
   " Run ~/.vim/build-you-complete-me when YouCompleteMe is updated
   Plug 'Valloric/YouCompleteMe'
+  Plug 'christoomey/vim-titlecase'
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'christoomey/vim-tmux-runner'
+  "Plug 'benmills/vimux'
+
+  Plug 'rhysd/vim-textobj-anyblock'
+  Plug 'kana/vim-textobj-user'
+  Plug 'glts/vim-textobj-comment'
+  Plug 'kana/vim-textobj-function'
+  Plug 'kana/vim-textobj-indent'
+  Plug 'kana/vim-textobj-line'
+  Plug 'beloglazov/vim-textobj-quotes'
+  Plug 'tek/vim-textobj-ruby'
+  Plug 'nelstrom/vim-textobj-rubyblock'
+  Plug 'kana/vim-textobj-user'
+  Plug 'Julian/vim-textobj-variable-segment'
 call plug#end()
 
 " Disable concealing double quotes in JSON files
-let g:vim_json_syntax_conceal = 0
+let g:vim_json_syntax_conceal=0
 
 " Disable asking whether it is OK to run .ycm_extra_conf.py
-let g:ycm_confirm_extra_conf = 0
+let g:ycm_confirm_extra_conf=0
 
 " Trigger configuration. Do not use <tab> since it will conflict with
 " https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<c-space>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-if has('gui_running')
-  ":colorscheme github
-  :colorscheme koehler
-  :set guifont=Liberation\ Mono\ 10 " Font family and font size.
-  :set guioptions-=T               " Hide toolbar.
-  :set lines=58 columns=102        " Window dimensions.
-else
-  ":colorscheme rubyblue
-  ":colorscheme koehler
-endif
-"colorscheme vividchalk
-"colorscheme topfunky-light
-"colorscheme koehler
-"colorscheme rubyblue
 
 let g:SuperTabDefaultCompletionType='context'
 if has('gui_running')
@@ -209,11 +246,11 @@ else
 endif
 
 " BASH support
-let g:BASH_AuthorName   = 'Christopher Voltz'
-let g:BASH_AuthorRef    = 'CDV'
-let g:BASH_Email        = 'christopher.voltz@hp.com'
-let g:BASH_Company      = 'Hewlett-Packard'
-let g:BASH_CopyrightHolder = "(C) Hewlett Packard Enterprise, 2013"
+let g:BASH_AuthorName='Christopher Voltz'
+let g:BASH_AuthorRef='CDV'
+let g:BASH_Email='christopher.voltz@hpe.com'
+let g:BASH_Company='Hewlett Packard Enterprise'
+let g:BASH_CopyrightHolder="© Hewlett Packard Enterprise, 2017"
 let &errorformat="%f:%l:%c: %t%*[^:]:%m,%f:%l: %t%*[^:]:%m," . &errorformat
 
 " Conversion HTML (:help 2html.vim)
@@ -232,6 +269,63 @@ filetype plugin on	" Enable filetype-specific plugins
 compiler ruby		" Enable compiler support for ruby
 tab 15			" Increase the limit on the number of tabs which can be opened
 
+" Setup powerline
+if matchstr($HOSTNAME, "cvoltz.*") != -1
+  python3 from powerline.vim import setup as powerline_setup
+  python3 powerline_setup()
+  python3 del powerline_setup
+else
+  set statusline=[%n]\ %<%.99f\ %h%w%m%r%y\ %{fugitive#statusline()}%{exists('*CapsLockStatusline')?CapsLockStatusline():''}%=%-16(\ %l,%c%V\ %)%P
+endif
+
+if has('gui_running')
+  "colorscheme github
+  colorscheme koehler
+  :set guifont=Cousine\ for\ Powerline\ 10
+  :set showtabline=1
+  :set guioptions-=T               " Hide toolbar.
+  :set lines=58 columns=102        " Window dimensions.
+else
+  if g:background == "light"
+    "colorscheme github
+    ":highlight ColorColumn ctermbg=255
+    "colorscheme one
+    "highlight ColorColumn ctermbg=254
+
+    let xterm16_colormap="softlight"
+    let xterm16_brightness="high"
+    let xterm16_white="#ffffff"
+    colorscheme xterm16
+    highlight ColorColumn ctermbg=lightgray
+    highlight Comment ctermfg=lightgray
+  else
+    "colorscheme rubyblue
+    colorscheme koehler
+    "colorscheme default
+  end
+endif
+
+" For languages other than C, this will show trailing spaces
+let g:ShowTrailingWhitespace=1
+highlight ShowTrailingWhitespace ctermbg=233 guibg=#0c0c0c
+
+" Highlight text beyond 80 columns with a grey background
+if exists('+colorcolumn')
+  let &colorcolumn=join(range(81,999),",")
+  if g:background == "light"
+    highlight ColorColumn ctermbg=233 guibg=#0c0c0c
+  else
+    highlight ColorColumn ctermbg=233 guibg=#0c0c0c
+  endif
+else
+  au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+endif
+
+" vim-indent-guides
+let g:indent_guides_auto_colors=0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black   ctermbg=black
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=darkgrey
+
 " Show tabs with a chevron (right-pointing double angle quotation mark) at
 " each tab position, show trailing and non-breaking space with a middle dot,
 " and show extended lines which aren't displayed with a trailing right angular
@@ -242,24 +336,12 @@ set listchars=tab:»\ ,trail:·,extends:>,nbsp:·
 " C Syntax file can highlight spaces before tabs and trailing spaces
 let c_space_errors=1
 
-" For languages other than C, this will show trailing spaces
-let g:ShowTrailingWhitespace=1
-highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
-
-" Highlight text beyond 80 columns with a grey background
-function! HighlightWideText()
-  if exists('+colorcolumn')
-    let &colorcolumn=join(range(81,999),",")
-    highlight ColorColumn ctermbg=233 guibg=#0c0c0c
-  else
-    au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
-  endif
-endfunction
-
 " Autowrap text to 80 chars for certain filetypes
 autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 autocmd BufRead,BufNewFile *.txt setlocal textwidth=80
-autocmd FileType gitcommit setlocal textwidth=80
+
+" Turn off wrapping for files being edited using ItsAllText
+autocmd BufRead,BufNewFile /tmp/itsalltext/*.txt setlocal textwidth=0
 
 " auto remove trailing whitespace on buffer save
 "autocmd! BufWrite * mark ' | silent! %s/\s\+$// | norm ''
@@ -351,20 +433,9 @@ if has("cscope")
   nmap <S-C-/>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 endif
 
-let g:speckyBannerKey        = "<C-S>b"
-let g:speckyQuoteSwitcherKey = "<C-S>'"
-let g:speckyRunRdocKey       = "<C-S>r"
-let g:speckySpecSwitcherKey  = "<C-S>x"
-let g:speckyRunSpecKey       = "<C-S>s"
-let g:speckyRunRdocCmd       = "ri"
-let g:speckyWindowType       = 0
-
 runtime macros/matchit.vim
 
 autocmd BufNewFile,BufRead Capfile,Gemfile,Rakefile,Thorfile,config.ru,.caprc,.irbrc,irb_tempfile*,*.rb set filetype=ruby
-
-" Highlight text past 80 columns
-autocmd FileType * call HighlightWideText()
 
 " Automatic fold settings for specific files.
 autocmd FileType c,cpp,h,vim,xml,html,xhtml,ruby setlocal foldmethod=syntax
@@ -372,9 +443,6 @@ autocmd FileType c,cpp,h,vim,xml,html,xhtml,ruby normal zR
 "autocmd FileType c,cpp,h set foldmethod=syntax
 autocmd FileType ruby setlocal foldmethod=syntax shiftwidth=2 tabstop=2 expandtab softtabstop=2
 autocmd FileType css  setlocal foldmethod=indent shiftwidth=2 tabstop=2
-
-" For the MakeGreen plugin and Ruby RSpec.
-autocmd BufNewFile,BufRead *_spec.rb set filetype=ruby
 
 " F8: Run currently open cucumber feature file
 " F9: Run current cucumber scenario
@@ -387,36 +455,16 @@ autocmd FileType cucumber nmap <F8> :w<cr>:!bin/cucumber --no-color %<cr> |
 autocmd FileType cucumber nmap <F9> :w<cr>:exe "!bin/cucumber  --no-color %" . ":" . line(".")<cr> |
 autocmd FileType cucumber nmap <F10> :w<cr>:!bin/cucumber --no-color<cr>
 
-" Run currently open RSpec test file
-map <Leader>rf :w<cr>:!bin/rspec % --format documentation --no-color<cr>
-
-" Run current RSpec test
-map <Leader>rl :w<cr>:exe "!bin/rspec --no-color %" . ":" . line(".")<cr>
-
-" RSpec is clever enough to work out test to run if cursor is on any line
-" within the test.
-" Run all RSpec tests
-map <Leader>rt :w<cr>:!bin/rspec --format documentation< --no-color<cr>
-
-autocmd FileType ruby
-\ if expand('%') =~# '_test\.rb$' |
-\   compiler rubyunit | setl makeprg=testrb\ \"%:p\" |
-\ elseif expand('%') =~# '_spec\.rb$' |
-\   compiler rspec | setl makeprg=rspec\ \"%:p\" |
-\ else |
-\   compiler ruby | setl makeprg=ruby\ -wc\ \"%:p\" |
-\ endif
-
 autocmd User Bundler
 \ if &makeprg !~ 'bundle' | setl makeprg^=bundle\ exec\  | endif
 
-let g:LustyJugglerSuppressRubyWarning = 1
-let g:errormarker_disablemappings = 1
+let g:LustyJugglerSuppressRubyWarning=1
+let g:errormarker_disablemappings=1
 
-let g:rooter_patterns = ['Rakefile', '.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/']
-map <silent> <unique> <Leader>lcd <Plug>RooterChangeToRootDirectory
+let g:rooter_patterns=['Rakefile', '.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/']
+map <silent> <Leader>lcd <Plug>RooterChangeToRootDirectory
 " Disable automatic change of directory to project root
-" let g:rooter_manual_only = 1
+let g:rooter_manual_only=1
 
 " Changes to support vim-latex
 " Force grep to always show the filename (even for a single file)
@@ -426,6 +474,32 @@ let g:tex_flavor='latex'
 "let g:Tex_ViewRule_ps='okular'
 "let g:Tex_ViewRule_pdf='okular'
 "let g:Tex_ViewRule_dvi='okular'
+
+" vim-latex defines C-j, which is mapped over by tmux-naviagator,  so redefine
+" the vim-latex key to C-g
+imap <C-g> <Plug>IMAP_JumpForward
+nmap <C-g> <Plug>IMAP_JumpForward
+
+" Settings for LaTeX files
+autocmd FileType tex
+\ set spell |
+\ set expandtab |
+\ set tw=80 |
+\ set sw=2
+
+" latex-box configuration
+autocmd FileType tex
+\ imap <buffer> [[     \begin{ |
+\ imap <buffer> ]]     <Plug>LatexCloseCurEnv |
+\ imap <buffer> ((     \eqref{ |
+\ nmap <buffer> <F5>   <Plug>LatexChangeEnv |
+\ vmap <buffer> <F7>   <Plug>LatexWrapSelection |
+\ vmap <buffer> <S-F7> <Plug>LatexEnvWrapSelection
+let g:LatexBox_quickfix=2
+let g:LatexBox_split_type="vnew"
+let g:LatexBox_split_resize=1
+let g:LatexBox_Folding=1
+let g:LatexBox_custom_indent=0
 
 " Restore cursor position
 autocmd BufReadPost *
@@ -439,23 +513,90 @@ vmap <Leader>s :<C-U>!svn blame <C-R>=expand("%:p") <CR> \|
 vmap <Leader>g :<C-U>!git blame <C-R>=expand("%:p") <CR> \|
 \ sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
 
-let g:tmux_navigator_no_mappings = 1
-nmap <silent> <c-h> :TmuxNavigateLeft<cr>
-nmap <silent> <c-j> :TmuxNavigateDown<cr>
-nmap <silent> <c-k> :TmuxNavigateUp<cr>
-nmap <silent> <c-l> :TmuxNavigateRight<cr>
-nmap <silent> <c-\> :TmuxNavigatePrevious<cr>
+"let g:tmux_navigator_no_mappings=1
+nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+"nmap <silent> <c-\> :TmuxNavigatePrevious<cr>
 
-" Rspec.vim mappings
+" For the MakeGreen plugin and Ruby RSpec.
+autocmd BufNewFile,BufRead *_spec.rb set filetype=ruby
+
+let g:speckyBannerKey="<C-S>b"
+let g:speckyQuoteSwitcherKey="<C-S>'"
+let g:speckyRunRdocKey="<C-S>r"
+let g:speckySpecSwitcherKey="<C-S>x"
+let g:speckyRunSpecKey="<C-S>s"
+let g:speckyRunRdocCmd="ri"
+let g:speckyWindowType=2
+
+autocmd FileType ruby
+\ if expand('%') =~# '_test\.rb$' |
+\   compiler rubyunit | setl makeprg=testrb\ \"%:p\" |
+\ elseif expand('%') =~# '_spec\.rb$' |
+\   compiler rspec | setl makeprg=rspec\ \"%:p\" |
+\ else |
+\   compiler ruby | setl makeprg=ruby\ -wc\ \"%:p\" |
+\ endif
+
+"
+" These mappings run rspec in a command window which replaces the editor
+"
+
+" Run currently open RSpec test file
+map <Leader>rf :w<cr>:!bin/rspec % --format documentation --no-color<cr>
+
+" Run current RSpec test. RSpec is clever enough to work out test to run if
+" cursor is on any line within the test.
+map <Leader>rl :w<cr>:exe "!bin/rspec --no-color %" . ":" . line(".")<cr>
+
+" Run all RSpec tests
+map <Leader>rt :w<cr>:!bin/rspec --format documentation< --no-color<cr>
+
+"
+" These mappings run rspec in a new horizontal split below the current page
+" or in an already open tmux pane.
+"
+
+"map <Leader>rb :call VimuxRunCommand("clear; rspec " . bufname("%"))<CR>
+"map <Leader>rq :call VimuxRunCommand("clear; rspec " . bufname("%"), 0)<CR><CR>
+"map <Leader>vc :VimuxClearRunnerHistory<CR>
+"map <Leader>vi :VimuxInspectRunner<CR>
+"map <Leader>vl :VimuxRunLastCommand<CR>
+"map <Leader>vp :VimuxPromptCommand<CR>
+"map <Leader>vq :VimuxCloseRunner<CR>
+"map <Leader>vs :VimuxInterruptRunner<CR>
+"let g:VimuxHeight="20" " 20% window size
+"let g:VimuxOrientation="v"
+
+"
+" These mappings run rspec in a tmux pane
+"
+
+" Run rspec in new pane
+"let g:rspec_command="Dispatch rspec {spec}"
+
+"let g:rspec_command="call VtrSendCommand('rspec {spec}')"
+
+" Run rspec in selected TMux pane (use \stv to reset which pane)
+let g:rspec_command='call Send_to_Tmux("rspec {spec}\n")'
+map <Leader>stv <Plug>SetTmuxVars
+
 autocmd BufNewFile,BufRead *_spec.rb
 \ map <Leader>t :call RunCurrentSpecFile()<CR> |
 \ map <Leader>s :call RunNearestSpec()<CR> |
 \ map <Leader>l :call RunLastSpec()<CR> |
 \ map <Leader>a :call RunAllSpecs()<CR>
 
-set completefunc=syntaxcomplete#Complete
+" TMux runner
+nnoremap <leader>irb :VtrOpenRunner {'orientation': 'h', 'percentage': 50, 'cmd': 'irb'}<cr>
+let g:VtrClearSequence="clear<cr>"
+let g:VtrOrientation="h"
+let g:VtrClearBeforeSend=1
+let g:VtrUseVtrMaps=1
 
-"let g:switch_custom_definitions =
+"let g:switch_custom_definitions=
 " \ [
 " \     'unity': { 'Expect': 'Ignore' },
 " \      'ruby_string': {
@@ -465,45 +606,27 @@ set completefunc=syntaxcomplete#Complete
 " \      },
 " \ ]
 
-" DokuWiki plugin
-"let g:DokuVimKi_USER = "christopher.voltz@hp.com"
-"let g:DokuVimKi_URL = "https://cv-xw9400.americas.hpqcorp.net/wiki/lib/exe/xmlrpc.php"
-"let g:DokuVimKi_USER = "cvoltz"
-"et g:DokuVimKi_URL = "https://neelix.cce.hp.com/wiki/lib/exe/xmlrpc.php"
-"source ~/.dokuwiki_credentials
-
-let g:rspec_command = "Dispatch rspec {spec}"
-
-" vimux
-map <Leader>rb :call VimuxRunCommand("clear; rspec " . bufname("%"))<CR>
-map <Leader>rq :call VimuxRunCommand("clear; rspec " . bufname("%"), 0)<CR>
-map <Leader>vc :VimuxClearRunnerHistory<CR>
-map <Leader>vi :VimuxInspectRunner<CR>
-map <Leader>vl :VimuxRunLastCommand<CR>
-map <Leader>vp :VimuxPromptCommand<CR>
-map <Leader>vq :VimuxCloseRunner<CR>
-map <Leader>vs :VimuxInterruptRunner<CR>
-let g:VimuxHeight = "20" " 20% window size
-let g:VimuxOrientation = "v"
-
-" Setup term color support
-if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
-  set t_Co=256
-endif
-
-if exists('$TMUX')
-  set term=screen-256color
-endif
-
-if exists('$ITERM_PROFILE')
-  if exists('$TMUX')
-    let &t_SI = "\<Esc>[3 q"
-    let &t_EI = "\<Esc>[0 q"
-  else
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+" looks for DokuWiki headlines in the first 20 lines
+" of the current buffer
+function! IsDokuWiki()
+  if match(getline(1,20),'^ \=\(=\{2,6}\).\+\1 *$') >= 0
+    set textwidth=0
+    set wrap
+    set linebreak
+    set filetype=dokuwiki
   endif
-end
+endfun
+
+" check for dokuwiki syntax
+autocmd BufWinEnter *.txt call IsDokuWiki()
+
+" Dokuvimki plugin
+if filereadable($HOME."/.vim/dokuvimki")
+  source $HOME/.vim/dokuvimki
+  hi DokuCodeGeneric ctermbg=black ctermfg=gray
+  hi DokuHeadline    ctermbg=black ctermfg=yellow
+  hi DokuBlockColor  ctermbg=black ctermfg=blue
+endif
 
 " automatically set paste and nopaste mode for tmux at the time pasting (as
 " happens in VIM UI)
@@ -511,8 +634,8 @@ function! WrapForTmux(s)
   if !exists('$TMUX')
     return a:s
   endif
-  let tmux_start = "\<Esc>Ptmux;"
-  let tmux_end = "\<Esc>\\"
+  let tmux_start="\<Esc>Ptmux;"
+  let tmux_end="\<Esc>\\"
   return tmux_start . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . tmux_end
 endfunction
 
@@ -527,13 +650,21 @@ endfunction
 
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 
-" set foldenable         " fold by default
-set nofoldenable       " dont fold by default
-set foldmethod=indent  " fold based on indentation
-set foldnestmax=10     " deepest fold is 10 levels
-set foldlevel=1
-set foldopen=all        " automatically open folds when entering them
-set foldclose=all       " automatically close folds when leaving them
+" set foldenable      " fold by default
+set nofoldenable    " dont fold by default
+"set foldclose=all     " automatically close folds when leaving them
+set foldlevel=1       " open the first fold by default
+set foldmethod=indent " fold based on indentation
+set foldnestmax=10    " deepest fold is 10 levels
+"set foldopen=all      " automatically open folds when entering them
+
+"let anyfold_activate=1          " activate folding for any file
+"let anyfold_fold_comments=1     " fold multiline comments
+"let anyfold_fold_display=1      " minimalistic display of closed folds
+"let anyfold_fold_toplevel=0     " don't fold subsequent unindented lines
+"let anyfold_identify_comments=1 " identify and ignore comment lines
+"let anyfold_motion=1            " map motion commands to [[, ]], [j, and ]k
+"hi Folded term=None cterm=None
 
 " Use ack for grepping
 set grepprg=ack
@@ -601,26 +732,30 @@ autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
 autocmd BufRead,BufNewFile *.txt setlocal spell spelllang=en_us
 autocmd FileType gitcommit setlocal spell spelllang=en_us
 
-" CtrlP Config (http://kien.github.io/ctrlp.vim/)
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_match_window_bottom = 0
-let g:ctrlp_match_window_reversed = 0
-let g:ctrlp_custom_ignore =
-\ '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_dotfiles = 0
-let g:ctrlp_switch_buffer = 0
+" CtrlP config
+" disable setting a local working directory
+"let g:ctrlp_working_path_mode = 0
+" ignore files we wouldn't be searching for
+let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py|artifacts'
+" don't scan dotfiles and dotdirs
+let g:ctrlp_show_hidden = 0
+" use ag for listing the files--way faster and no useless files.
+"let g:ctrlp_user_command='ag %s -l --hidden --ignore .git --nocolor'
+" disable caching of list of files
+let g:ctrlp_use_caching=0
+" Open files in vertical split
+let g:ctrlp_open_new_file = 'v'
+" Prompt for a key specifying how to open a file when c-o or c-y pressed
+let g:ctrlp_arg_map = 1
 
-" Make CtrlP use ag for listing the files. Way faster and no useless files.
-let g:ctrlp_user_command = 'ag %s -l --hidden --nocolor -g ""'
-let g:ctrlp_use_caching = 0
+" Command-t config
+nmap <Leader>T <Plug>(CommandT)
 
 " Vimux config
-let g:vroom_use_vimux = 1
-let g:vroom_use_zeus = 1
-let g:vroom_cucumber_path = 'bin/cucumber'
-let g:vroom_use_binstubs = 1
+"let g:vroom_use_vimux=1
+"let g:vroom_use_zeus=1
+let g:vroom_cucumber_path='cucumber'
+let g:vroom_use_binstubs=1
 
 " Map F8 to rake for Hovercraft files
 autocmd BufNewFile,BufRead *.rst setl makeprg=rake
@@ -629,19 +764,8 @@ autocmd BufNewFile,BufRead *.rst setl makeprg=rake
 autocmd VimResized * :wincmd =
 
 " zoom a vim pane, <C-w>= to re-balance
-nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
-nnoremap <leader>= :wincmd =<cr>
-
-" TMux runner
-nnoremap <leader>irb :VtrOpenRunner {'orientation': 'h', 'percentage': 50, 'cmd': 'irb'}<cr>
-
-" Vim rspec + tmux
-"let g:rspec_command = "Dispatch rspec {spec}"
-let g:rspec_command = "call VtrSendCommand('rspec {spec}')"
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
+nnoremap <Leader>- :wincmd _<cr>:wincmd \|<cr>
+nnoremap <Leader>= :wincmd =<cr>
 
 "BEGIN_DEVASSISTANT_1
 "Setting value devassistant to 0 will use your existing .vimrc file
@@ -652,15 +776,8 @@ map <Leader>a :call RunAllSpecs()<CR>
 "endif
 "END_DEVASSISTANT_1
 
-autocmd Filetype gitcommit setlocal spell textwidth=72
-
-" vim-indent-guides
-let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black   ctermbg=black
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=darkgrey
-
 " Toggle crosshair cursor
-nnoremap <quiet> <leader>ch :set cursorline cursorcolumn!<cr>
+nmap <Leader>+ :set cursorline cursorcolumn!<CR>
 
 " Mappings already in use
 " Mapping          Mode Plugin     Function
@@ -671,11 +788,38 @@ nnoremap <quiet> <leader>ch :set cursorline cursorcolumn!<cr>
 "<LocalLeader>tm   n    turbux     <Plug>SendTestToTmux
 "<LocalLeader>tm   v    .vimrc     :tabmove
 
-" Disable search highlights
-nnoremap <quiet> // :nohlsearch
+" Disable search highlights with <Esc><Esc>
+nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
 
 " Auto-reload vimrc when it is changed
 augroup reload_vimrc
     autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END
+
+let g:syntastic_check_on_open = 1
+let g:syntastic_always_populate_loc_list = 1
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+let g:PyLintOnWrite = 1
+
+autocmd BufNewFile,BufRead .stgit-edit.txt setlocal spell tw=64
+autocmd BufNewFile,BufRead .stgit-new.txt setlocal spell tw=64
+autocmd BufNewFile,BufRead .git/COMMIT_EDITMSG setlocal spell tw=64
+autocmd Filetype stgnew setlocal spell tw=64
+autocmd Filetype gitcommit setlocal spell textwidth=64
+
+" Set cadre settings
+let g:legend_file_path = "artifacts/cadre/coverage.vim"
+let g:legend_hit_color = "ctermfg=Green cterm=bold gui=bold guifg=Green"
+let g:legend_ignored_color = "ctermfg=DarkGrey guifg=DarkGrey"
+
+" Allow project specific .vimrc files but don't let shell and write commands
+" be run unless the .vimrc is owned by me
+set exrc
+set secure
+
+" Add command to redraw the screen
+nmap <LocalLeader>R :redraw!<cr>
