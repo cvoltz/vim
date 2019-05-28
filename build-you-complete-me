@@ -8,10 +8,9 @@ for pkg in \
   cmake \
   gcc \
   gcc-c++ \
-  golang-pkg-bin-linux-amd64 \
+  golang-bin \
   kernel-devel \
   llvm \
-  npm \
   nodejs \
   python-devel;
 do
@@ -21,6 +20,6 @@ done
 cd ~/.vim/plugged/YouCompleteMe
 ./install.py \
   --clang-completer \
-  --gocode-completer \
   --tern-completer
 exit
+#  --gocode-completer \
