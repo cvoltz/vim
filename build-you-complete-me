@@ -12,14 +12,14 @@ for pkg in \
   kernel-devel \
   llvm \
   nodejs \
-  python-devel;
+  python36-devel;
 do
   rpm -q $pkg || sudo yum install -y $pkg
 done
 
 cd ~/.vim/plugged/YouCompleteMe
-./install.py \
-  --clang-completer \
-  --tern-completer
+python3 install.py \
+  --clang-completer
 exit
 #  --gocode-completer \
+#  --tern-completer
