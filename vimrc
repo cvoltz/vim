@@ -1,6 +1,6 @@
 set backspace=indent,eol,start    " Intuitive backspacing.
 set cursorline                    " Highlight entire line where cursor is
-"set directory=$HOME/.vim/tmp//,.  " Keep swap files in one location
+"set directory=$HOME/.vim/tmp//,. " Keep swap files in one location
 set hidden                        " Handle multiple buffers better.
 set hlsearch                      " Highlight matches.
 set ignorecase                    " Case-insensitive searching.
@@ -9,7 +9,7 @@ set nobackup                      " Don't make a backup before overwriting a fil
 set noerrorbells                  " No beeping.
 set nocompatible                  " We're running Vim, not Vi!
 set nowritebackup                 " And again.
-"set number                        " Show line numbers.
+"set number                       " Show line numbers.
 set ruler                         " Show cursor position.
 set scrolloff=3                   " Show 3 lines of context around the cursor.
 set showcmd                       " Display incomplete commands.
@@ -22,8 +22,8 @@ set wildignore+=*.so,*.swp,*.zip
 set wrap                          " Turn on line wrapping.
 "set completeopt=menu,preview
 "set complete=.,w,b,u,t           " Get completion keywords from current file, other windows, buffers, and tags
-"set complete=.,t                  " Get completion keywords from current file, other windows, buffers, and tags
-set completefunc=syntaxcomplete#Complete
+"set complete=.,t                 " Get completion keywords from current file, other windows, buffers, and tags
+set completefunc=syntaxcomplete#Complete " For YCM
 set sessionoptions+=localoptions,resize,winpos " When a session is saved, save the local options and mappings, the size of the window, and its position
 set autoindent                    " Always set autoindenting on
 set copyindent                    " Copy the previous indentation on autoindenting
@@ -35,14 +35,20 @@ set showtabline=2                 " Always display the tabline
 set noshowmode                    " Hide the default mode text
 set clipboard=unnamed,unnamedplus,autoselectplus
 set viminfo='100,:100,/50,h,f1    " Save 100 file marks, 100 lines command-line history, 50 last searches, disable hlsearch loading, enable saving file marks
+set mouse=a                       " Enable the mouse in all modes
+set cmdheight=2
 
 " Setup term color support
 if exists('$TMUX')
-  set term=screen-256color
+  "set term=screen-256color
+  set term=xterm-256color-italic
 endif
 
-if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
+" Force 256 color on
+if $TERM =~ "xterm-256color.*" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
   set t_Co=256
+  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
 if $BACKGROUND ==? "light"
@@ -59,6 +65,29 @@ omap ix <Plug>(textobj-comment-i)
 xmap ix <Plug>(textobj-comment-i)
 omap aX <Plug>(textobj-comment-big-a)
 xmap aX <Plug>(textobj-comment-big-a)
+
+"
+" ALE configuration
+"
+
+" Enable completion where available.
+" This setting must be set before ALE is loaded.
+"
+" You should not turn this setting on if you wish to use ALE as a completion
+" source for other completion plugins, like Deoplete.
+"et g:ale_completion_enabled=1
+
+"setlocal omnifunc=ale#completion#OmniFunc
+
+" Tell ALE to use balloons. This setting must be set before ALE is loaded.
+"et g:ale_set_balloons=1
+
+" Tell ALE to use the preview window.
+" let g:ale_hover_to_preview=1
+
+"
+" Plug configuration
+"
 
 " Install vim-plug if it isn't installed
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -78,8 +107,10 @@ autocmd VimEnter *
 source /home/cvoltz/.vim/autoload/plug.vim
 
 call plug#begin()
+  Plug 'tpope/vim-abolish'
   Plug 'mileszs/ack.vim'
   Plug 'rking/ag.vim'
+  Plug 'dense-analysis/ale'
   "Plug 'pseewald/vim-anyfold'
   Plug 'cvoltz/autoproto.vim'
   "Plug 'vim-scripts/bash-support.vim'
@@ -92,6 +123,10 @@ call plug#begin()
   Plug 'sjl/gundo.vim'
   Plug 'Rykka/InstantRst'
   Plug 'cvoltz/Kwbd.vim'
+  Plug 'autozimu/LanguageClient-neovim', {
+      \ 'branch': 'next',
+      \ 'do': 'bash install.sh',
+      \ }
   Plug 'LaTeX-Box-Team/LaTeX-Box'
   Plug 'ddollar/nerdcommenter'
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -111,7 +146,7 @@ call plug#begin()
   Plug 'vim-scripts/Specky'
   Plug 'ervandew/supertab'
   Plug 'AndrewRadev/switch.vim'
-  Plug 'scrooloose/syntastic'
+  "Plug 'scrooloose/syntastic'
   Plug 'godlygeek/tabular'
   Plug 'majutsushi/tagbar'
   Plug 'tomtom/tcomment_vim'
@@ -133,6 +168,7 @@ call plug#begin()
   Plug 'junegunn/vim-easy-align'
   Plug 'Lokaltog/vim-easymotion'
   Plug 'tpope/vim-endwise'
+  "Plug 'sentientmonkey/vim-flog'
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-git'
   Plug 'fatih/vim-go'
@@ -205,6 +241,13 @@ call plug#begin()
 
   Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
   " Run ~/.vim/build-you-complete-me when YouCompleteMe is updated
+  if has('patch-8.1.2269')
+    " Latest YCM needs at least this version of vim 
+    Plug 'ycm-core/YouCompleteMe'
+  else
+    " Version compatible with the vim in CentOS 8
+    Plug 'ycm-core/YouCompleteMe', { 'commit':'d98f896' }
+  endif
   Plug 'Valloric/YouCompleteMe'
   Plug 'christoomey/vim-titlecase'
   Plug 'christoomey/vim-tmux-navigator'
@@ -227,8 +270,21 @@ call plug#end()
 " Disable concealing double quotes in JSON files
 let g:vim_json_syntax_conceal=0
 
+"
+" YCM configuration
+"
+
 " Disable asking whether it is OK to run .ycm_extra_conf.py
 let g:ycm_confirm_extra_conf=0
+
+"  \     'cmdline': [ 'tcp://localhost:7658' ],
+let g:ycm_language_server = [
+  \   {
+  \     'name': 'ruby',
+  \     'cmdline': [ 'solargraph', 'stdio' ],
+  \     'filetypes': [ 'ruby' ],
+  \   },
+  \ ]
 
 " Trigger configuration. Do not use <tab> since it will conflict with
 " https://github.com/Valloric/YouCompleteMe.
@@ -262,12 +318,12 @@ set fileencodings=ucs-bom,utf8
 " Load all of the plugins in ~/.vim/bundle
 " silent! call pathogen#infect()
 
-syntax on		" Enable syntax highlighting
-filetype on		" Enable filetype detection
-filetype indent on	" Enable filetype-specific indenting
-filetype plugin on	" Enable filetype-specific plugins
-compiler ruby		" Enable compiler support for ruby
-tab 15			" Increase the limit on the number of tabs which can be opened
+syntax on               " Enable syntax highlighting
+filetype on             " Enable filetype detection
+filetype indent on      " Enable filetype-specific indenting
+filetype plugin on      " Enable filetype-specific plugins
+compiler ruby           " Enable compiler support for ruby
+tab 15                  " Increase the limit on the number of tabs which can be opened
 
 " Setup powerline
 if matchstr($HOSTNAME, "cvoltz.*") != -1
@@ -301,6 +357,7 @@ else
   else
     "colorscheme rubyblue
     colorscheme koehler
+    highlight SpellBad cterm=none ctermfg=red ctermbg=black
     "colorscheme default
   end
 endif
@@ -312,14 +369,10 @@ highlight ShowTrailingWhitespace ctermbg=233 guibg=#0c0c0c
 " Highlight text beyond 80 columns with a grey background
 if exists('+colorcolumn')
   let &colorcolumn=join(range(81,999),",")
-  if g:background == "light"
-    highlight ColorColumn ctermbg=233 guibg=#0c0c0c
-  else
-    highlight ColorColumn ctermbg=233 guibg=#0c0c0c
-  endif
 else
   au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 endif
+highlight ColorColumn ctermbg=233 guibg=#0c0c0c
 
 " vim-indent-guides
 let g:indent_guides_auto_colors=0
@@ -614,6 +667,7 @@ function! IsDokuWiki()
     set wrap
     set linebreak
     set filetype=dokuwiki
+    set colorcolumn=
   endif
 endfun
 
@@ -623,9 +677,15 @@ autocmd BufWinEnter *.txt call IsDokuWiki()
 " Dokuvimki plugin
 if filereadable($HOME."/.vim/dokuvimki")
   source $HOME/.vim/dokuvimki
-  hi DokuCodeGeneric ctermbg=black ctermfg=gray
-  hi DokuHeadline    ctermbg=black ctermfg=yellow
-  hi DokuBlockColor  ctermbg=black ctermfg=blue
+  highlight DokuCodeGeneric ctermbg=black ctermfg=gray
+  highlight DokuHeadline    ctermbg=black ctermfg=yellow
+  highlight DokuBlockColor  ctermbg=black ctermfg=blue
+  highlight DokuLink        cterm=none ctermbg=black ctermfg=blue
+  highlight DokuItalic      cterm=italic
+  highlight DokuBold        cterm=bold
+  highlight DokuUnderlined  cterm=underline
+  highlight DokuSmileys     ctermbg=black ctermfg=yellow
+  let g:DokuVimKi_INDEX_WINWIDTH = 10
 endif
 
 " automatically set paste and nopaste mode for tmux at the time pasting (as
@@ -731,6 +791,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 autocmd BufRead,BufNewFile *.md setlocal spell spelllang=en_us
 autocmd BufRead,BufNewFile *.txt setlocal spell spelllang=en_us
 autocmd FileType gitcommit setlocal spell spelllang=en_us
+autocmd FileType dokuwiki setlocal spell spelllang=en_us
 
 " CtrlP config
 " disable setting a local working directory
@@ -793,8 +854,8 @@ nnoremap <silent> <Esc><Esc> <Esc>:nohlsearch<CR><Esc>
 
 " Auto-reload vimrc when it is changed
 augroup reload_vimrc
-    autocmd!
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+  autocmd!
+  autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END
 
 let g:syntastic_check_on_open = 1
@@ -805,11 +866,12 @@ let g:syntastic_always_populate_loc_list = 1
 
 let g:PyLintOnWrite = 1
 
-autocmd BufNewFile,BufRead .stgit-edit.txt setlocal spell tw=64
-autocmd BufNewFile,BufRead .stgit-new.txt setlocal spell tw=64
-autocmd BufNewFile,BufRead .git/COMMIT_EDITMSG setlocal spell tw=64
-autocmd Filetype stgnew setlocal spell tw=64
-autocmd Filetype gitcommit setlocal spell textwidth=64
+autocmd BufNewFile,BufRead .stgit-edit.txt setlocal spell tw=60
+autocmd BufNewFile,BufRead .stgit-new.txt setlocal spell tw=60
+autocmd BufNewFile,BufRead .stgit-squash.txt setlocal spell tw=60
+autocmd BufNewFile,BufRead .git/COMMIT_EDITMSG setlocal spell tw=60
+autocmd Filetype stgnew setlocal spell tw=60
+autocmd Filetype gitcommit setlocal spell textwidth=60
 
 " Set cadre settings
 let g:legend_file_path = "artifacts/cadre/coverage.vim"
@@ -823,3 +885,46 @@ set secure
 
 " Add command to redraw the screen
 nmap <LocalLeader>R :redraw!<cr>
+
+"
+" Language client configuration
+"
+
+" Ideally this is what we would use:
+"   let g:LanguageClient_serverCommands = { "ruby": ["solargraph", "stdio"] }
+" but the solargraph process becomes defunct so we have to tell the client
+" to talk to solargraph over TCP and then we have to tell the client
+" not to stop solargraph upon exit (so we don't have to keep starting it).
+" Unfortunately, this configuration requires one to have externally started
+" solargraph (by running "solargraph socket") before vim is started.
+"let g:LanguageClient_autoStop = 0
+"let g:LanguageClient_serverCommands = { "ruby": ["tcp://localhost:7658"] }
+let g:LanguageClient_serverCommands = { "ruby": ["solargraph", "stdio"] }
+
+"let g:LanguageClient_serverCommands = {
+"    \ "ruby": ["~/.rvm/gems/ruby-2.7.0/bin/solargraph", "stdio"],
+"    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+"    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+"    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+"    \ 'python': ['/usr/local/bin/pyls'],
+"    \ }
+
+"let g:LanguageClient_hoverPreview  = Auto
+"set omnifunc=LanguageClient#complete
+
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+
+augroup LanguageClient_config
+  autocmd!
+  autocmd User LanguageClientStarted setlocal signcolumn=yes
+  autocmd User LanguageClientStopped setlocal signcolumn=auto
+augroup END
+
+" Enable flog
+"silent exe "g:flog_enable"
+
+ab _so Signed-off-by: Christopher Voltz <christopher.voltz@hpe.com>
